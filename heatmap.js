@@ -35,22 +35,35 @@ $("document").ready(function () {
     var yAxis = d3.svg.axis()
       .scale(yScale)
       .orient("left")
-      .ticks(12, "")
 
-      svg.append("g")
-      .attr("class", "x axis")
-      .attr("transform", "translate(0," + height + ")")
-      .call(xAxis);
+    svg.append("g")
+    .attr("class", "x axis")
+    .attr("transform", "translate(0," + height + ")")
+    .call(xAxis)
+    .append("text")
+    .attr("x", width / 2 )
+    .attr("y", margin.bottom)
+    .style({
+      "text-anchor": "middle",
+      "font-weight": "bold"
+    })
+    .text("Years")
+
+    var y = 0 - margin.left
 
     svg.append("g")
       .attr("class", "y axis")
       .call(yAxis)
       .append("text")
       .attr("transform", "rotate(-90)")
-      .attr("y", 6)
-      .attr("dy", "0.8em")
-      .style("text-anchor", "middle")
-      .text("Months");
+      .attr("y", y)
+      .attr("x",0 - (height / 2))
+      .attr("dy", "1em")
+      .style({
+        "text-anchor": "middle",
+        "font-weight": "bold"
+      })
+      .text("Months")
 
 
 
