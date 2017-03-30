@@ -4,3 +4,10 @@ svg {
   margin-right: auto;
   background: beige;
 }
+
+.axis path,
+.axis line {
+  fill: none;
+  stroke: #000;
+  shape-rendering: crispEdges;
+}
