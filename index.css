@@ -11,3 +11,8 @@ svg {
   stroke: #000;
   shape-rendering: crispEdges;
 }
+
+rect {
+  stroke: #000;
+  fill: green;
+}

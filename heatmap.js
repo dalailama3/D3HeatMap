@@ -8,7 +8,7 @@ $("document").ready(function () {
     var baseTemperature = result.baseTemperature;
 
     var margin = {  top: 80, right: 140, bottom: 60, left: 100 }
-    var width = 1300 - margin.left - margin.right
+    var width = 1200 - margin.left - margin.right
     var height = 700 - margin.top - margin.bottom
     var svg = d3.select("body").append("svg")
       .attr("width", width + margin.left + margin.right)
@@ -22,9 +22,12 @@ $("document").ready(function () {
       .domain([new Date("1753"), new Date("2015")])
       .range([0, width])
 
+    var monthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"]
+
     var yScale = d3.scale.ordinal()
-      .domain(["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"])
+      .domain(monthNames)
       .rangePoints([0, height])
+
 
     var xAxis = d3.svg.axis()
       .scale(xScale)
@@ -35,19 +38,20 @@ $("document").ready(function () {
     var yAxis = d3.svg.axis()
       .scale(yScale)
       .orient("left")
+      .ticks(13)
 
     svg.append("g")
     .attr("class", "x axis")
     .attr("transform", "translate(0," + height + ")")
     .call(xAxis)
     .append("text")
-    .attr("x", width / 2 )
-    .attr("y", margin.bottom)
-    .style({
-      "text-anchor": "middle",
-      "font-weight": "bold"
-    })
-    .text("Years")
+      .attr("x", width / 2 )
+      .attr("y", margin.bottom)
+      .style({
+        "text-anchor": "middle",
+        "font-weight": "bold"
+      })
+      .text("Years")
 
     var y = 0 - margin.left
 
@@ -55,15 +59,32 @@ $("document").ready(function () {
       .attr("class", "y axis")
       .call(yAxis)
       .append("text")
-      .attr("transform", "rotate(-90)")
-      .attr("y", y)
-      .attr("x",0 - (height / 2))
-      .attr("dy", "1em")
-      .style({
-        "text-anchor": "middle",
-        "font-weight": "bold"
-      })
-      .text("Months")
+        .attr("transform", "rotate(-90)")
+        .attr("y", y)
+        .attr("x",0 - (height / 2))
+        .attr("dy", "1em")
+        .style({
+          "text-anchor": "middle",
+          "font-weight": "bold"
+        })
+        .text("Months")
+
+      console.log(result.monthlyVariance)
+
+
+
+      //go through data and append rects
+      svg.selectAll("rect")
+        .data(result.monthlyVariance)
+        .enter().append("rect")
+        .attr("x", function (d) {
+          return xScale(new Date(d.year.toString()))
+        })
+        .attr("y", function (d) {
+          return height - yScale(monthNames[d.month - 1])
+        })
+        .attr("height", height / 12)
+        .attr("width", width / (2015 - 1753) )
 
 
 
