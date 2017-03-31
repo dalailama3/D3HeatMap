@@ -72,6 +72,25 @@ $("document").ready(function () {
       console.log(result.monthlyVariance)
 
 
+      var colors = ['#ffffcc','#ffeda0','#fed976','#feb24c','#fd8d3c','#fc4e2a','#e31a1c','#bd0026','#800026']
+
+
+
+      function assignColor(temp) {
+        var colorRanges = [];
+        for (var i = 1; i <= 9; i++) {
+          colorRanges.push(14/9 * i)
+        }
+
+        for (var i = 0; i < colorRanges.length; i ++) {
+          if (temp <= colorRanges[i]) {
+            result = i;
+            break;
+          }
+        }
+        return colors[result];
+
+      }
 
       //go through data and append rects
       svg.selectAll("rect")
@@ -85,6 +104,11 @@ $("document").ready(function () {
         })
         .attr("height", height / 12)
         .attr("width", width / (2015 - 1753) )
+        .attr("fill", function (d) {
+          var temp = d.variance + baseTemperature;
+          return assignColor(temp)
+        })
+
 
 
 
