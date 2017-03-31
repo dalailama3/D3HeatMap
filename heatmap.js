@@ -22,7 +22,7 @@ $("document").ready(function () {
       .domain([new Date("1753"), new Date("2015")])
       .range([0, width])
 
-    var monthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"]
+    var monthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December", ""]
 
     var yScale = d3.scale.ordinal()
       .domain(monthNames)
@@ -38,7 +38,9 @@ $("document").ready(function () {
     var yAxis = d3.svg.axis()
       .scale(yScale)
       .orient("left")
-      .ticks(12, "")
+      .tickPadding(8)
+      .tickSize(0)
+
 
     svg.append("g")
     .attr("class", "x axis")
@@ -58,6 +60,7 @@ $("document").ready(function () {
     svg.append("g")
       .attr("class", "y axis")
       .call(yAxis)
+
       .append("text")
         .attr("transform", "rotate(-90)")
         .attr("y", y)
@@ -69,7 +72,22 @@ $("document").ready(function () {
         })
         .text("Months")
 
-      console.log(result.monthlyVariance)
+      var ticks = $("g.y.axis").find(".tick")
+      ticks = Array.prototype.slice.call(ticks)
+      ticks.forEach((tick, i)=> {
+        console.log(i)
+        var $tick = $(tick)
+        console.log($tick.attr("transform"))
+        var heightDif = 46.666666666666664;
+        var newDif = i * heightDif + (heightDif / 2)
+        var translateStr = "translate(0," + newDif + ")"
+        $tick.attr("transform", translateStr)
+        console.log($tick.attr("transform"))
+
+      })
+
+
+
 
 
       var colors = ['#ffffcc','#ffeda0','#fed976','#feb24c','#fd8d3c','#fc4e2a','#e31a1c','#bd0026','#800026']
@@ -120,7 +138,7 @@ $("document").ready(function () {
         .attr("y", function (d) {
           return yScale(monthNames[d.month - 1])
         })
-        .attr("height", height / 24)
+        .attr("height", height / 12)
         .attr("width", width / (2015 - 1753) )
         .attr("fill", function (d) {
           var temp = d.variance + baseTemperature;

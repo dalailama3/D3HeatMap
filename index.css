@@ -15,6 +15,11 @@ svg {
 rect {
   stroke: #000;
   opacity: 0.8;
+
+}
+
+rect:hover {
+  cursor: pointer;
 }
 
 .d3-tip {
