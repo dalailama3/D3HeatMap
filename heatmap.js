@@ -4,7 +4,7 @@ $("document").ready(function () {
     url: "https://raw.githubusercontent.com/FreeCodeCamp/ProjectReferenceData/master/global-temperature.json",
     dataType: "json"
   }).done(function (result) {
-    console.log(result)
+    // console.log(result)
     var baseTemperature = result.baseTemperature;
 
     var margin = {  top: 80, right: 140, bottom: 80, left: 100 }
@@ -151,7 +151,7 @@ $("document").ready(function () {
       return [range, colors[i]]
     })
 
-    console.log(legendData)
+    // console.log(legendData)
     var legend = svg.selectAll(".legend")
       .data(legendData)
       .enter().append("g")
