@@ -38,7 +38,7 @@ $("document").ready(function () {
     var yAxis = d3.svg.axis()
       .scale(yScale)
       .orient("left")
-      .ticks(13)
+      .ticks(12, "")
 
     svg.append("g")
     .attr("class", "x axis")
@@ -92,22 +92,44 @@ $("document").ready(function () {
 
       }
 
+      //tool-tip
+      function withSign (variance) {
+        if (variance >= 0) {
+          return "+" + variance;
+        } else {
+          return variance
+        }
+      }
+
+      var tip = d3.tip()
+      .attr('class', 'd3-tip')
+      .offset([-10, 0])
+      .html(function(d) {
+        var temp = d.variance + baseTemperature;
+        return "<span>" + monthNames[d.month - 1] + ", " + d.year + "</span><br><span>" + temp + "&degC" + "</span>" + "<br><span>" + withSign(d.variance) + "</span>"
+      })
+
       //go through data and append rects
       svg.selectAll("rect")
         .data(result.monthlyVariance)
         .enter().append("rect")
+        .call(tip)
         .attr("x", function (d) {
           return xScale(new Date(d.year.toString()))
         })
         .attr("y", function (d) {
-          return height - yScale(monthNames[d.month - 1])
+          return yScale(monthNames[d.month - 1])
         })
-        .attr("height", height / 12)
+        .attr("height", height / 24)
         .attr("width", width / (2015 - 1753) )
         .attr("fill", function (d) {
           var temp = d.variance + baseTemperature;
           return assignColor(temp)
         })
+        .on("mouseover", tip.show)
+        .on("mouseout", tip.hide)
+
+
 
 
 
