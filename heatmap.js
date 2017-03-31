@@ -7,8 +7,8 @@ $("document").ready(function () {
     console.log(result)
     var baseTemperature = result.baseTemperature;
 
-    var margin = {  top: 80, right: 140, bottom: 60, left: 100 }
-    var width = 1200 - margin.left - margin.right
+    var margin = {  top: 80, right: 140, bottom: 80, left: 100 }
+    var width = 1300 - margin.left - margin.right
     var height = 700 - margin.top - margin.bottom
     var svg = d3.select("body").append("svg")
       .attr("width", width + margin.left + margin.right)
@@ -48,10 +48,11 @@ $("document").ready(function () {
     .call(xAxis)
     .append("text")
       .attr("x", width / 2 )
-      .attr("y", margin.bottom)
+      .attr("y", margin.bottom - 20)
       .style({
         "text-anchor": "middle",
-        "font-weight": "bold"
+        "font-weight": "bold",
+        "font-size": "20px"
       })
       .text("Years")
 
@@ -68,37 +69,34 @@ $("document").ready(function () {
         .attr("dy", "1em")
         .style({
           "text-anchor": "middle",
-          "font-weight": "bold"
+          "font-weight": "bold",
+          "font-size": "20px"
         })
         .text("Months")
 
       var ticks = $("g.y.axis").find(".tick")
       ticks = Array.prototype.slice.call(ticks)
       ticks.forEach((tick, i)=> {
-        console.log(i)
+        // console.log(i)
         var $tick = $(tick)
-        console.log($tick.attr("transform"))
+        // console.log($tick.attr("transform"))
         var heightDif = 46.666666666666664;
         var newDif = i * heightDif + (heightDif / 2)
         var translateStr = "translate(0," + newDif + ")"
         $tick.attr("transform", translateStr)
-        console.log($tick.attr("transform"))
+        // console.log($tick.attr("transform"))
 
       })
 
-
-
+      var colorRanges = [];
+      for (var i = 1; i <= 9; i++) {
+        colorRanges.push(14/9 * i)
+      }
 
 
       var colors = ['#ffffcc','#ffeda0','#fed976','#feb24c','#fd8d3c','#fc4e2a','#e31a1c','#bd0026','#800026']
 
-
-
       function assignColor(temp) {
-        var colorRanges = [];
-        for (var i = 1; i <= 9; i++) {
-          colorRanges.push(14/9 * i)
-        }
 
         for (var i = 0; i < colorRanges.length; i ++) {
           if (temp <= colorRanges[i]) {
@@ -147,10 +145,60 @@ $("document").ready(function () {
         .on("mouseover", tip.show)
         .on("mouseout", tip.hide)
 
+      //add colors legend
 
+    var legendData = colorRanges.map(function (range,i) {
+      return [range, colors[i]]
+    })
 
+    console.log(legendData)
+    var legend = svg.selectAll(".legend")
+      .data(legendData)
+      .enter().append("g")
+      .attr("class", "legend")
+      .attr("transform", function(d, i) {
+        var margin = parseInt(i * 18 + 200);
+        return "translate(100," + margin + ")";
 
+    });
 
+  // draw legend colored rectangles
+  legend.append("rect")
+      .attr("x", width - 18)
+      .attr("width", 18)
+      .attr("height", 18)
+      .style("fill", function(d) { return d[1];});
+
+  // draw legend text
+  legend.append("text")
+      .attr("x", width - 24)
+      .attr("y", 9)
+      .attr("dy", ".35em")
+      .style({
+        "text-anchor": "end",
+        "font-size": "16px"
+      })
+      .text(function(d) { return d[0].toFixed(1);})
+
+  //chart title
+  svg.append("text")
+        .attr("x", (width / 2))
+        .attr("y", 0 - (margin.top / 2))
+        .attr("text-anchor", "middle")
+        .style({
+            "font-size": "30px",
+            "font-weight": "bold"
+        })
+        .text("Monthly Global Land-Surface Temperature from 1753-2015")
+
+  svg.append("text")
+    .attr("x", (width / 2))
+    .attr("y", 0 - (margin.top/ 5))
+    .attr("text-anchor", "middle")
+    .style({
+      "font-size": "14px"
+    })
+    .text("Temperatures are in Celsius and are displayed relative to the Jan 1951-Dec 1980 average of 8.66 degrees celsius")
 
   })
 

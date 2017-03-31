@@ -1,8 +1,13 @@
+body {
+  background: black;
+}
+
 svg {
   display: block;
   margin-left: auto;
   margin-right: auto;
-  background: beige;
+  background: antiquewhite;
+  border-radius: 2px;
 }
 
 .axis path,
@@ -13,9 +18,7 @@ svg {
 }
 
 rect {
-  stroke: #000;
-  opacity: 0.8;
-
+  /*stroke: #000;*/
 }
 
 rect:hover {
